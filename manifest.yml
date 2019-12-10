@@ -1,0 +1,10 @@
+---
+applications:
+  - name: sdgApp
+    memory: 768M
+    instances: 1
+    path: ./target/test-0.0.1-SNAPSHOT.jar
+    services:
+      - pccService
+    buildpacks:
+      - https://github.com/cloudfoundry/java-buildpack.git
