@@ -5,11 +5,14 @@ import lombok.Getter;
 @Getter
 public class OperationResponse {
 
+  private String operation;
+
   private Status status;
 
   private long completionTime;
 
-  public OperationResponse(Status status, long completionTime) {
+  public OperationResponse(String operation, Status status, long completionTime) {
+    this.operation = operation;
     this.status = status;
     this.completionTime = completionTime;
   }

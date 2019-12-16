@@ -8,11 +8,12 @@ import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.gemfire.mapping.annotation.Region;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
 @Getter
-@ToString
+@ToString(exclude = "payload")
 @Region("Trades")
 @RequiredArgsConstructor
 public class Trade {
@@ -29,4 +30,7 @@ public class Trade {
 
   @NonNull
   private final BigDecimal price;
+
+  @NonNull
+  private final byte[] payload;
 }
