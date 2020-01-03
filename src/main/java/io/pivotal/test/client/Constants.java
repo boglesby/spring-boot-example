@@ -30,21 +30,11 @@ public interface Constants {
 
   String FUNCTION_UPDATE_FOREVER = "functionupdateforever";
 
-  String PUT_FOREVER_THREADS = "putforeverthreads";
-
-  String GET_FOREVER_THREADS = "getforeverthreads";
-
-  String DESTROY_FOREVER_THREADS = "destroyforeverthreads";
-
-  String QUERY_BY_CUSIP_FOREVER_THREADS = "querybycusipforeverthreads";
-
-  String FUNCTION_UPDATE_FOREVER_THREADS = "functionupdateforeverthreads";
-
   String GET_ONE = "getone";
 
   String QUERY_ONE_BY_CUSIP = "queryonebycusip";
 
-  String START_SIMPLE_TEST = "startsimpletest";
+  String START_TEST = "starttest";
 
   String STOP_OPERATIONS = "stopoperations";
 
@@ -61,4 +51,8 @@ public interface Constants {
   String QUERIES_PARAMETER = "/{queries}";
 
   String THREADS_PARAMETER = "/{threads}";
+
+  String METRICS_PATH = "/metrics";
+
+  String METRICS_TYPE_PARAMETER = "/{type}";
 }

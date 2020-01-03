@@ -7,9 +7,9 @@ import org.springframework.data.gemfire.function.annotation.OnRegion;
 import java.math.BigDecimal;
 import java.util.Set;
 
-//@OnRegion(region = "Trades")
+@OnRegion(region = "Trades")
 public interface TradeFunctions {
 
-//  @FunctionId("UpdateTradeFunction")
+  @FunctionId("UpdateTradeFunction")
   Object updateTrade(@Filter Set<?> keys, int shares, BigDecimal price);
 }

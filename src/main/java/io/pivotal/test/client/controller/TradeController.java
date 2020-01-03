@@ -3,7 +3,6 @@ package io.pivotal.test.client.controller;
 import io.pivotal.test.client.domain.Trade;
 import io.pivotal.test.client.service.OperationResponse;
 import io.pivotal.test.client.service.TradeService;
-import org.apache.geode.cache.client.internal.Op;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import static io.pivotal.test.client.Constants.*;
 
@@ -74,78 +74,64 @@ public class TradeController {
     return this.service.functionUpdate(entries);
   }
 
-  @PostMapping(TRADES_PATH + PUT_FOREVER + ENTRIES_PARAMETER + SIZE_PARAMETER)
+  @PostMapping(value = {
+    TRADES_PATH + PUT_FOREVER + ENTRIES_PARAMETER + SIZE_PARAMETER,
+    TRADES_PATH + PUT_FOREVER + ENTRIES_PARAMETER + SIZE_PARAMETER + THREADS_PARAMETER })
   @ResponseStatus(HttpStatus.OK)
-  public OperationResponse putForever(@PathVariable int entries, @PathVariable int size) {
-    return this.service.putForeverThreads(entries, size, 1);
+  public OperationResponse putForever(@PathVariable int entries, @PathVariable int size, @PathVariable Optional<Integer> threads) {
+    return this.service.putForever(entries, size, threads);
   }
 
-  @GetMapping(TRADES_PATH + GET_FOREVER + ENTRIES_PARAMETER)
+  @GetMapping(value = {
+    TRADES_PATH + GET_FOREVER + ENTRIES_PARAMETER,
+    TRADES_PATH + GET_FOREVER + ENTRIES_PARAMETER + THREADS_PARAMETER })
   @ResponseStatus(HttpStatus.OK)
-  public OperationResponse getForever(@PathVariable int entries) {
-    return this.service.getForeverThreads(entries, 1);
+  public OperationResponse getForever(@PathVariable int entries, @PathVariable Optional<Integer> threads) {
+    return this.service.getForever(entries, threads);
   }
 
-  @DeleteMapping(TRADES_PATH + DESTROY_FOREVER + ENTRIES_PARAMETER)
+  @DeleteMapping(value = {
+    TRADES_PATH + DESTROY_FOREVER + ENTRIES_PARAMETER,
+    TRADES_PATH + DESTROY_FOREVER + ENTRIES_PARAMETER + THREADS_PARAMETER })
   @ResponseStatus(HttpStatus.OK)
-  public OperationResponse destroyForever(@PathVariable int entries) {
-    return this.service.destroyForeverThreads(entries, 1);
+  public OperationResponse destroyForever(@PathVariable int entries, @PathVariable Optional<Integer> threads) {
+    return this.service.destroyForever(entries, threads);
   }
 
-  @GetMapping(TRADES_PATH + QUERY_BY_CUSIP_FOREVER)
+  @GetMapping(value = {
+    TRADES_PATH + QUERY_BY_CUSIP_FOREVER,
+    TRADES_PATH + QUERY_BY_CUSIP_FOREVER + THREADS_PARAMETER})
   @ResponseStatus(HttpStatus.OK)
-  public OperationResponse queryByCusipForever() {
-    return this.service.queryByCusipForeverThreads(1);
+  public OperationResponse queryByCusipForever(@PathVariable Optional<Integer> threads) {
+    return this.service.queryByCusipForever(threads);
   }
 
-  @PostMapping(TRADES_PATH + FUNCTION_UPDATE_FOREVER + ENTRIES_PARAMETER)
+  @PostMapping(value = {
+    TRADES_PATH + FUNCTION_UPDATE_FOREVER + ENTRIES_PARAMETER,
+    TRADES_PATH + FUNCTION_UPDATE_FOREVER + ENTRIES_PARAMETER + THREADS_PARAMETER})
   @ResponseStatus(HttpStatus.OK)
-  public OperationResponse functionUpdateForever(@PathVariable int entries) {
-    return this.service.functionUpdateForeverThreads(entries, 1);
+  public OperationResponse functionUpdateForever(@PathVariable int entries, @PathVariable Optional<Integer> threads) {
+    return this.service.functionUpdateForever(entries, threads);
   }
 
-  @PostMapping(TRADES_PATH + PUT_FOREVER_THREADS + ENTRIES_PARAMETER + SIZE_PARAMETER + THREADS_PARAMETER)
+  @PostMapping(value = {
+    TRADES_PATH + START_TEST + ENTRIES_PARAMETER + SIZE_PARAMETER,
+    TRADES_PATH + START_TEST + ENTRIES_PARAMETER + SIZE_PARAMETER + THREADS_PARAMETER
+  })
   @ResponseStatus(HttpStatus.OK)
-  public OperationResponse putForeverThreads(@PathVariable int entries, @PathVariable int size, @PathVariable int threads) {
-    return this.service.putForeverThreads(entries, size, threads);
-  }
-
-  @GetMapping(TRADES_PATH + GET_FOREVER_THREADS + ENTRIES_PARAMETER + THREADS_PARAMETER)
-  @ResponseStatus(HttpStatus.OK)
-  public OperationResponse getForeverThreads(@PathVariable int entries, @PathVariable int threads) {
-    return this.service.getForeverThreads(entries, threads);
-  }
-
-  @DeleteMapping(TRADES_PATH + DESTROY_FOREVER_THREADS + ENTRIES_PARAMETER + THREADS_PARAMETER)
-  @ResponseStatus(HttpStatus.OK)
-  public OperationResponse destroyForeverThreads(@PathVariable int entries, @PathVariable int threads) {
-    return this.service.destroyForeverThreads(entries, threads);
-  }
-
-  @GetMapping(TRADES_PATH + QUERY_BY_CUSIP_FOREVER_THREADS + THREADS_PARAMETER)
-  @ResponseStatus(HttpStatus.OK)
-  public OperationResponse queryByCusipForeverThreads(@PathVariable int threads) {
-    return this.service.queryByCusipForeverThreads(threads);
-  }
-
-  @PostMapping(TRADES_PATH + FUNCTION_UPDATE_FOREVER_THREADS + ENTRIES_PARAMETER + THREADS_PARAMETER)
-  @ResponseStatus(HttpStatus.OK)
-  public OperationResponse functionUpdateForeverThreads(@PathVariable int entries, @PathVariable int threads) {
-    return this.service.functionUpdateForeverThreads(entries, threads);
-  }
-  @PostMapping(TRADES_PATH + START_SIMPLE_TEST + ENTRIES_PARAMETER + SIZE_PARAMETER)
-  @ResponseStatus(HttpStatus.OK)
-  public OperationResponse[] startSimpleTest(@PathVariable int entries, @PathVariable int size) {
-    OperationResponse putResponse = this.service.putForeverThreads(entries, size, 1);
-    OperationResponse getResponse = this.service.getForeverThreads(entries, 1);
-    OperationResponse queryResponse = this.service.queryByCusipForeverThreads(1);
-    OperationResponse functionResponse = this.service.functionUpdateForeverThreads(entries, 1);
-    return new OperationResponse[] {putResponse, getResponse, queryResponse, functionResponse};
+  public OperationResponse[] startTest(@PathVariable int entries, @PathVariable int size, @PathVariable Optional<Integer> threads) {
+    return this.service.startTest(entries, size, threads);
   }
 
   @PostMapping(TRADES_PATH + STOP_OPERATIONS)
   @ResponseStatus(HttpStatus.OK)
   public OperationResponse stopOperations() {
     return this.service.stopOperations();
+  }
+
+  @GetMapping(METRICS_PATH + METRICS_TYPE_PARAMETER)
+  @ResponseStatus(HttpStatus.OK)
+  public Object getMetrics(@PathVariable String type) {
+    return this.service.getMetrics(type);
   }
 }
